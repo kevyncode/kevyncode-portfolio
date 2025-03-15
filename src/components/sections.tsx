@@ -81,14 +81,14 @@ const SectionsBar = () => {
   );
 
   useEffect(() => {
-    if (selectedTechnology) {
+    if (activeSection === "Projects") {
       fetch(
         "https://api.github.com/users/kevyncode/repos?sort=created&per_page=5"
       )
         .then((response) => response.json())
         .then((data) => setRepositories(data));
     }
-  }, [selectedTechnology]);
+  }, [activeSection]);
 
   const handleSectionClick = (section: string) => {
     setActiveSection(section);

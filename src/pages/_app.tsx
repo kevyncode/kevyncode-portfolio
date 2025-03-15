@@ -25,10 +25,10 @@ export default function Home() {
           />
         </div>
         <div className="flex flex-col items-center justify-center w-full sm:w-2/3 lg:w-1/3 p-4 mt-4">
-          <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold">
+          <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-center">
             Kevyn Rodrigues
           </h1>
-          <p className="text-base sm:text-lg lg:text-l text-zinc-400 mt-2">
+          <p className="text-base sm:text-lg lg:text-l text-zinc-400 mt-2 text-center">
             Software Engineer Student
           </p>
         </div>
