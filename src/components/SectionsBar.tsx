@@ -4,6 +4,16 @@ import TechnologySection from "@/components/sections.components/TechnologySectio
 import SkillsSection from "@/components/sections.components/SkillsSection";
 import ProjectsSection from "@/components/sections.components/ProjectsSection";
 import ExperienceSection from "@/components/sections.components/ExperienceSection";
+import {
+  FaCode,
+  FaUsers,
+  FaProjectDiagram,
+  FaTasks,
+  FaGitAlt,
+  FaCogs,
+  FaBug,
+  FaLanguage,
+} from "react-icons/fa";
 import javascriptIcon from "@/assets/jsicon.svg";
 import typescriptIcon from "@/assets/tsicon.svg";
 import reactIcon from "@/assets/reacticon.png";
@@ -27,40 +37,42 @@ const technologies = [
 ];
 
 const skills = [
-  { name: "Problem Solving" },
-  { name: "Team Collaboration" },
-  { name: "Project Management" },
-  { name: "Agile Methodologies" },
-  { name: "Version Control (Git)" },
-  { name: "Continuous Integration" },
-  { name: "Test-Driven Development" },
-  { name: "Code Review" },
-  { name: "Debugging" },
+  { name: "Problem Solving", icon: <FaCode /> },
+  { name: "Team Collaboration", icon: <FaUsers /> },
+  { name: "Project Management", icon: <FaProjectDiagram /> },
+  { name: "Agile Methodologies", icon: <FaTasks /> },
+  { name: "Version Control (Git)", icon: <FaGitAlt /> },
+  { name: "Continuous Integration", icon: <FaCogs /> },
+  { name: "Test-Driven Development", icon: <FaBug /> },
+  { name: "Code Review", icon: <FaCode /> },
+  { name: "Debugging", icon: <FaBug /> },
+  { name: "Inglês B2", icon: <FaLanguage /> },
 ];
 
 const experiences = [
   {
-    title: "Software Engineer",
-    company: "Tech Company",
-    description:
-      "Developed and maintained web applications using React and Node.js.",
-    details:
-      "Worked on various projects including e-commerce platforms, internal tools, and customer-facing applications. Collaborated with cross-functional teams to deliver high-quality software solutions.",
+    title: "Desenvolvedor e Engenheiro de Software",
+    company: "Projeto pessoal - Projeto 'Appetito'",
+    description: "12/2024 – Em Andamento",
+    details: `
+Ferramentas Utilizadas: TypeScript | React | Next.js | Tailwind CSS | Firebase | Git | GitHub | Scrum
+• Fundador e desenvolvedor principal de uma aplicação web para gerenciamento de pedidos em restaurantes, utilizando React e Next.js para a criação de interfaces dinâmicas e responsivas.
+• Criando componentes reutilizáveis e estilizados com Tailwind CSS, garantindo uma experiência de usuário consistente e moderna.
+• Integrando a aplicação com Firebase para autenticação e armazenamento de dados, assegurando a segurança e a escalabilidade do projeto.
+• Usando Visual Studio Code e gerenciando a integração com repositórios Git, utilizando GitHub para controle de versão e colaboração.
+• Facilitando reuniões diárias, revisões de sprint e retrospectivas, garantindo entregas incrementais e a comunicação entre a equipe.
+    `,
   },
   {
-    title: "Frontend Developer",
-    company: "Web Agency",
-    description:
-      "Created responsive websites and web applications using HTML, CSS, and JavaScript.",
-    details:
-      "Developed custom themes and plugins for WordPress, optimized websites for performance and SEO, and provided technical support to clients.",
-  },
-  {
-    title: "Backend Developer",
-    company: "Startup",
-    description: "Built and maintained RESTful APIs using Node.js and Express.",
-    details:
-      "Designed and implemented database schemas, integrated third-party services, and ensured the scalability and security of the backend systems.",
+    title: "Estudante e Pesquisador",
+    company: "Atividades Acadêmicas – Sistemas Operacionais e Redes",
+    description: "07/2024 – Finalizado",
+    details: `
+Ferramentas Utilizadas: VirtualBox | C | Linux | Scrum | Git
+• Documentei e executei tarefas de instalação de máquinas virtuais e programação em C, sempre utilizando práticas ágeis para organização e interação rápida.
+• Como Scrum Master em atividades de laboratório, gerenciei sprints curtos para entrega de experimentos práticos, como a execução de processos com fork e exec no Linux.
+• Facilitar a comunicação entre os membros do grupo, garantindo que todos seguissem o cronograma.
+    `,
   },
 ];
 

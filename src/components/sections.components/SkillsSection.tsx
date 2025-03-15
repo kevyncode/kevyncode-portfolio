@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 interface Skill {
   name: string;
+  icon: React.ReactNode;
 }
 
 interface SkillsSectionProps {
@@ -25,6 +26,7 @@ const SkillsSection: React.FC<SkillsSectionProps> = ({ skills }) => {
           className="flex items-center p-4 border border-zinc-400 rounded-lg bg-transparent"
           whileHover={{ scale: 1.05 }}
         >
+          <span className="mr-4">{skill.icon}</span>
           <span className="text-lg font-semibold">{skill.name}</span>
         </motion.div>
       ))}
