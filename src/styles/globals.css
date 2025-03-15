@@ -1,10 +1,10 @@
-@use "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import "tailwindcss";
 
 :root {
-  --background: #000000; // Fundo preto
-  --foreground: #ffffff; // Texto branco
-  --font-family: "JetBrains Mono", monospace; // Fonte JetBrains Mono
+  --background: #000000; /* Fundo preto */
+  --foreground: #ffffff; /* Texto branco */
+  --font-family: "JetBrains Mono", monospace; /* Fonte JetBrains Mono */
 }
 
 body {

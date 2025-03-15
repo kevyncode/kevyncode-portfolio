@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "@/styles/globals.scss";
+import "@/styles/globals.css";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import javascriptIcon from "@/assets/jsicon.svg";

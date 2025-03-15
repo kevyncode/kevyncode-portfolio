@@ -1,4 +1,4 @@
-import "@/styles/globals.scss";
+import "@/styles/globals.css";
 import Head from "next/head";
 import Image from "next/image";
 import imagePerfil from "@/assets/fotoperfil.png";
