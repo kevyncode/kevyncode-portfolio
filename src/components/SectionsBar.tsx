@@ -46,7 +46,7 @@ const skills = [
   { name: "Test-Driven Development", icon: <FaBug /> },
   { name: "Code Review", icon: <FaCode /> },
   { name: "Debugging", icon: <FaBug /> },
-  { name: "Inglês B2", icon: <FaLanguage /> },
+  { name: "English B2", icon: <FaLanguage /> },
 ];
 
 const experiences = [

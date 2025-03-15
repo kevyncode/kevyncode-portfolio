@@ -85,7 +85,7 @@ export default function Home() {
               </button>
             </a>
             <a
-              href="https://twitter.com/kevynrodrigues"
+              href="https://x.com/kevyncode"
               target="_blank"
               rel="noopener noreferrer"
             >
