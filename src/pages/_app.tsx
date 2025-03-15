@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 import Head from "next/head";
 import Image from "next/image";
 import imagePerfil from "@/assets/fotoperfil.png";
-import SectionsBar from "@/components/sections";
+import SectionsBar from "@/components/SectionsBar";
 import linkedinIcon from "@/assets/linkedinIcon.svg";
 import githubIcon from "@/assets/githubIcon.svg";
 import twitterIcon from "@/assets/twitterIcon.svg";

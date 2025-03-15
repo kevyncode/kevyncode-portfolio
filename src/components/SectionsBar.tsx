@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import TechnologySection from "@/components/sections.components/TechnologySection";
+import SkillsSection from "@/components/sections.components/SkillsSection";
+import ProjectsSection from "@/components/sections.components/ProjectsSection";
+import ExperienceSection from "@/components/sections.components/ExperienceSection";
 import javascriptIcon from "@/assets/jsicon.svg";
 import typescriptIcon from "@/assets/tsicon.svg";
 import reactIcon from "@/assets/reacticon.png";
@@ -129,32 +132,10 @@ const SectionsBar = () => {
       </div>
       <AnimatePresence mode="wait">
         {activeSection === "Technologies" && !selectedTechnology && (
-          <motion.div
-            key="technologies"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
-            {technologies.map((tech) => (
-              <motion.div
-                key={tech.name}
-                className="flex items-center p-4 border border-zinc-400 rounded-lg bg-transparent cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                onClick={() => handleTechnologyClick(tech.name)}
-              >
-                <Image
-                  src={tech.icon}
-                  alt={tech.name}
-                  width={32}
-                  height={32}
-                  className="mr-4"
-                />
-                <span className="text-lg font-semibold">{tech.name}</span>
-              </motion.div>
-            ))}
-          </motion.div>
+          <TechnologySection
+            technologies={technologies}
+            onTechnologyClick={handleTechnologyClick}
+          />
         )}
         {selectedTechnology && (
           <motion.div
@@ -205,98 +186,16 @@ const SectionsBar = () => {
             </div>
           </motion.div>
         )}
-        {activeSection === "Skills" && (
-          <motion.div
-            key="skills"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
-            {skills.map((skill) => (
-              <motion.div
-                key={skill.name}
-                className="flex items-center p-4 border border-zinc-400 rounded-lg bg-transparent"
-                whileHover={{ scale: 1.05 }}
-              >
-                <span className="text-lg font-semibold">{skill.name}</span>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
+        {activeSection === "Skills" && <SkillsSection skills={skills} />}
         {activeSection === "Projects" && !selectedTechnology && (
-          <motion.div
-            key="projects"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-          >
-            {repositories.map((repo) => (
-              <motion.div
-                key={repo.id}
-                className="flex flex-col p-4 border border-zinc-400 rounded-lg bg-transparent"
-                whileHover={{ scale: 1.05 }}
-              >
-                <h3 className="text-lg font-semibold">{repo.name}</h3>
-                <p className="text-sm text-zinc-400">{repo.description}</p>
-                <a
-                  href={repo.html_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-2"
-                >
-                  <button className="px-4 py-2 bg-transparent text-white border border-zinc-600 rounded-lg hover:bg-zinc-700">
-                    GitHub Repository
-                  </button>
-                </a>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ProjectsSection repositories={repositories} />
         )}
         {activeSection === "Experience" && (
-          <motion.div
-            key="experience"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="w-full mt-4"
-          >
-            {experiences.map((experience, index) => (
-              <motion.div
-                key={index}
-                className="flex flex-col p-4 border-l-4 border-white bg-transparent mb-4 cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                onClick={() => handleExperienceClick(index)}
-              >
-                <div className="ml-4">
-                  <h3 className="text-lg font-semibold">{experience.title}</h3>
-                  <p className="text-sm text-zinc-400">{experience.company}</p>
-                  <p className="text-sm text-zinc-400">
-                    • {experience.description}
-                  </p>
-                  <AnimatePresence>
-                    {expandedExperience === index && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="mt-2"
-                      >
-                        <p className="text-sm text-zinc-400">
-                          {experience.details}
-                        </p>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <ExperienceSection
+            experiences={experiences}
+            expandedExperience={expandedExperience}
+            onExperienceClick={handleExperienceClick}
+          />
         )}
       </AnimatePresence>
     </div>
