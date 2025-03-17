@@ -98,7 +98,7 @@ const SectionsBar = () => {
   useEffect(() => {
     if (activeSection === "Projects") {
       fetch(
-        "https://api.github.com/users/kevyncode/repos?sort=created&per_page=5"
+        "https://api.github.com/users/kevyncode/repos?sort=created&per_page=6"
       )
         .then((response) => response.json())
         .then((data) => setRepositories(data));
