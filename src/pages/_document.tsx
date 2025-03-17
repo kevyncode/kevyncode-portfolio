@@ -5,7 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="icon" href="/favicon.svg" />
+          <link rel="icon" href="/favicon.png" />
           <meta
             name="description"
             content="Kevyn Rodrigues - Software Developer & Content Creator"
