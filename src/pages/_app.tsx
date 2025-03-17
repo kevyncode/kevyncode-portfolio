@@ -7,6 +7,7 @@ import linkedinIcon from "@/assets/linkedinIcon.svg";
 import githubIcon from "@/assets/githubIcon.svg";
 import twitterIcon from "@/assets/twitterIcon.svg";
 import emailIcon from "@/assets/emailIcon.png";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Home() {
   return (
@@ -16,13 +17,14 @@ export default function Home() {
       </Head>
       <div className="flex flex-col items-center min-h-screen p-4">
         <div className="flex flex-col items-center justify-center w-full sm:w-2/3 lg:w-1/3 p-4">
-          <Image
-            className="w-45 h-45 sm:w-40 sm:h-40 lg:w-50 lg:h-50 rounded-full"
-            src={imagePerfil}
-            alt="Kevyn Rodrigues"
-            width={100}
-            height={100}
-          />
+          <div className="relative w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 overflow-hidden shadow-lg">
+            <Image
+              src={imagePerfil}
+              alt="Kevyn Rodrigues"
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
         </div>
         <div className="flex flex-col items-center justify-center w-full sm:w-2/3 lg:w-1/3 p-4 mt-4">
           <h1 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-center">
@@ -119,6 +121,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Analytics />
     </>
   );
 }
