@@ -17,7 +17,7 @@ export default function Home() {
       </Head>
       <div className="flex flex-col items-center min-h-screen p-4">
         <div className="flex flex-col items-center justify-center w-full sm:w-2/3 lg:w-1/3 p-4">
-          <div className="relative w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 overflow-hidden shadow-lg">
+          <div className="relative w-40 h-40 sm:w-48 sm:h-48 lg:w-56 lg:h-56 overflow-hidden">
             <Image
               src={imagePerfil}
               alt="Kevyn Rodrigues"
