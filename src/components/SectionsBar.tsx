@@ -16,7 +16,7 @@ import {
 } from "react-icons/fa";
 import javascriptIcon from "@/assets/jsicon.svg";
 import typescriptIcon from "@/assets/tsicon.svg";
-import reactIcon from "@/assets/reacticon.png";
+import reactIcon from "@/assets/reacticon.svg";
 import nextjsIcon from "@/assets/nexticon.svg";
 import nodejsIcon from "@/assets/nodeicon.svg";
 import tailwindcssIcon from "@/assets/tailicon.svg";
