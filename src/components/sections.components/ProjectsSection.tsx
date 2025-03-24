@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import SpotlightCard from "@/components/SpotlightCard";
 
 interface Repository {
   id: number;
@@ -23,24 +24,26 @@ const ProjectsSection: React.FC<ProjectsSectionProps> = ({ repositories }) => {
       className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
     >
       {repositories.map((repo) => (
-        <motion.div
+        <SpotlightCard
           key={repo.id}
-          className="flex flex-col p-4 border border-zinc-400 rounded-lg bg-transparent"
-          whileHover={{ scale: 1.05 }}
+          className="custom-spotlight-card"
+          spotlightColor="rgba(0, 229, 255, 0.2)"
         >
-          <h3 className="text-lg font-semibold">{repo.name}</h3>
-          <p className="text-sm text-zinc-400">{repo.description}</p>
-          <a
-            href={repo.html_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2"
-          >
-            <button className="px-4 py-2 bg-transparent text-white border border-zinc-600 rounded-lg hover:bg-zinc-700">
-              GitHub Repository
-            </button>
-          </a>
-        </motion.div>
+          <motion.div className="flex flex-col" whileHover={{ scale: 1.05 }}>
+            <h3 className="text-lg font-semibold">{repo.name}</h3>
+            <p className="text-sm text-zinc-400">{repo.description}</p>
+            <a
+              href={repo.html_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2"
+            >
+              <button className="px-4 py-2 bg-transparent text-white border border-zinc-600 rounded-lg hover:bg-zinc-700">
+                GitHub Repository
+              </button>
+            </a>
+          </motion.div>
+        </SpotlightCard>
       ))}
     </motion.div>
   );

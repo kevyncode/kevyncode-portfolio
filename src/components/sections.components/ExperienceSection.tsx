@@ -48,7 +48,12 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   transition={{ duration: 0.3 }}
                   className="mt-2"
                 >
-                  <p className="text-sm text-zinc-400">{experience.details}</p>
+                  {/* Substituir <br> por quebras de linha */}
+                  {experience.details.split("<br>").map((line, i) => (
+                    <p key={i} className="text-sm text-zinc-400">
+                      {line.trim()}
+                    </p>
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>
