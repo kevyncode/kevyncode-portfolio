@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
 
@@ -18,6 +18,7 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
   className = "",
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const touchTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const sizeClasses = {
     sm: "w-36 h-36",
@@ -26,11 +27,19 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
     xl: "w-60 h-60 sm:w-68 sm:h-68 lg:w-76 lg:h-76",
   };
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
+  // Mouse events (desktop)
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => setIsHovered(false);
 
-  const handleMouseLeave = () => {
+  // Touch events (mobile)
+  const handleTouchStart = () => {
+    touchTimeout.current = setTimeout(() => setIsHovered(true), 250); // 250ms para "segurar"
+  };
+  const handleTouchEnd = () => {
+    if (touchTimeout.current) {
+      clearTimeout(touchTimeout.current);
+      touchTimeout.current = null;
+    }
     setIsHovered(false);
   };
 
@@ -39,6 +48,8 @@ const ProfileImage: React.FC<ProfileImageProps> = ({
       className={`relative ${sizeClasses[size]} ${className} perspective-1000`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       style={{ perspective: "1000px" }}
     >
       {/* Background glow effect */}
