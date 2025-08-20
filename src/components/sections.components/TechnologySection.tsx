@@ -1,11 +1,11 @@
 import React from "react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
 import SpotlightCard from "@/components/SpotlightCard";
 
 interface Technology {
   name: string;
-  icon: string;
+  icon: string | StaticImageData;
 }
 
 interface TechnologySectionProps {
@@ -42,7 +42,7 @@ const TechnologySection: React.FC<TechnologySectionProps> = ({
               alt={tech.name}
               width={32}
               height={32}
-              className="mr-4"
+              className="mr-4 rounded-full p-1 bg-white/10 backdrop-blur-sm border border-white/20"
             />
             <span className="text-lg font-semibold">{tech.name}</span>
           </motion.div>

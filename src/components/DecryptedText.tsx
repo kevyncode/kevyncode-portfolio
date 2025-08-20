@@ -18,12 +18,11 @@ interface DecryptedTextProps {
 
 export default function DecryptedText({
   text,
-  speed = 200, // Velocidade padrão ajustada para ser mais lenta
-  maxIterations = 20,
-  sequential = false,
+  speed = 80, // Velocidade suave para animação letra por letra
+  maxIterations = 6, // Poucas iterações antes de revelar cada letra
   revealDirection = "start",
   useOriginalCharsOnly = false,
-  characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+",
+  characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+",
   className = "",
   parentClassName = "",
   encryptedClassName = "",
@@ -37,11 +36,13 @@ export default function DecryptedText({
     new Set()
   );
   const [hasAnimated, setHasAnimated] = useState<boolean>(false);
+  const [currentRevealIndex, setCurrentRevealIndex] = useState<number>(0);
+  const [iterationsForCurrentChar, setIterationsForCurrentChar] =
+    useState<number>(0);
   const containerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     let interval: number;
-    let currentIteration = 0;
 
     const getNextIndex = (revealedSet: Set<number>): number => {
       const textLength = text.length;
@@ -79,75 +80,53 @@ export default function DecryptedText({
 
     const shuffleText = (
       originalText: string,
-      currentRevealed: Set<number>
+      currentRevealed: Set<number>,
+      currentIndex: number
     ): string => {
-      if (useOriginalCharsOnly) {
-        const positions = originalText.split("").map((char, i) => ({
-          char,
-          isSpace: char === " ",
-          index: i,
-          isRevealed: currentRevealed.has(i),
-        }));
-
-        const nonSpaceChars = positions
-          .filter((p) => !p.isSpace && !p.isRevealed)
-          .map((p) => p.char);
-
-        for (let i = nonSpaceChars.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [nonSpaceChars[i], nonSpaceChars[j]] = [
-            nonSpaceChars[j],
-            nonSpaceChars[i],
-          ];
-        }
-
-        let charIndex = 0;
-        return positions
-          .map((p) => {
-            if (p.isSpace) return " ";
-            if (p.isRevealed) return originalText[p.index];
-            return nonSpaceChars[charIndex++];
-          })
-          .join("");
-      } else {
-        return originalText
-          .split("")
-          .map((char, i) => {
-            if (char === " ") return " ";
-            if (currentRevealed.has(i)) return originalText[i];
+      return originalText
+        .split("")
+        .map((char, i) => {
+          if (char === " ") return " ";
+          if (currentRevealed.has(i)) return originalText[i];
+          if (i === currentIndex) {
+            // Scramble apenas a letra atual sendo revelada
             return availableChars[
               Math.floor(Math.random() * availableChars.length)
             ];
-          })
-          .join("");
-      }
+          }
+          return originalText[i];
+        })
+        .join("");
     };
 
     if (isHovering) {
       setIsScrambling(true);
+
       interval = window.setInterval(() => {
         setRevealedIndices((prevRevealed) => {
-          if (sequential) {
-            if (prevRevealed.size < text.length) {
-              const nextIndex = getNextIndex(prevRevealed);
-              const newRevealed = new Set(prevRevealed);
-              newRevealed.add(nextIndex);
-              setDisplayText(shuffleText(text, newRevealed));
-              return newRevealed;
-            } else {
-              clearInterval(interval);
-              setIsScrambling(false);
-              return prevRevealed;
-            }
-          } else {
-            setDisplayText(shuffleText(text, prevRevealed));
-            currentIteration++;
-            if (currentIteration >= maxIterations) {
-              clearInterval(interval);
-              setIsScrambling(false);
-              setDisplayText(text);
-            }
+          const nextIndex = getNextIndex(prevRevealed);
+
+          // Se chegamos ao fim do texto
+          if (prevRevealed.size >= text.length) {
+            clearInterval(interval);
+            setIsScrambling(false);
+            setDisplayText(text);
             return prevRevealed;
+          }
+
+          // Se ainda estamos scrambling a letra atual
+          if (iterationsForCurrentChar < maxIterations) {
+            setIterationsForCurrentChar((prev) => prev + 1);
+            setDisplayText(shuffleText(text, prevRevealed, nextIndex));
+            return prevRevealed;
+          } else {
+            // Revelar a letra atual e passar para a próxima
+            const newRevealed = new Set(prevRevealed);
+            newRevealed.add(nextIndex);
+            setCurrentRevealIndex(nextIndex + 1);
+            setIterationsForCurrentChar(0);
+            setDisplayText(shuffleText(text, newRevealed, nextIndex + 1));
+            return newRevealed;
           }
         });
       }, speed);
@@ -155,6 +134,8 @@ export default function DecryptedText({
       setDisplayText(text);
       setRevealedIndices(new Set());
       setIsScrambling(false);
+      setCurrentRevealIndex(0);
+      setIterationsForCurrentChar(0);
     }
 
     return () => {
@@ -165,10 +146,11 @@ export default function DecryptedText({
     text,
     speed,
     maxIterations,
-    sequential,
     revealDirection,
     characters,
     useOriginalCharsOnly,
+    iterationsForCurrentChar,
+    currentRevealIndex,
   ]);
 
   useEffect(() => {
@@ -179,6 +161,12 @@ export default function DecryptedText({
         if (entry.isIntersecting && !hasAnimated) {
           setIsHovering(true);
           setHasAnimated(true);
+
+          // Auto-desativar após a animação completa
+          const totalDuration = text.length * (maxIterations * speed) + 500;
+          setTimeout(() => {
+            setIsHovering(false);
+          }, totalDuration);
         }
       });
     };
@@ -201,7 +189,7 @@ export default function DecryptedText({
     return () => {
       if (currentRef) observer.unobserve(currentRef);
     };
-  }, [animateOn, hasAnimated]);
+  }, [animateOn, hasAnimated, maxIterations, speed, text.length]);
 
   const hoverProps =
     animateOn === "hover"
@@ -218,20 +206,30 @@ export default function DecryptedText({
       {...hoverProps}
       {...props}
     >
-      <span className="sr-only">{displayText}</span>
+      <span className="sr-only">{text}</span>
 
       <span aria-hidden="true">
         {displayText.split("").map((char, index) => {
-          const isRevealedOrDone =
-            revealedIndices.has(index) || !isScrambling || !isHovering;
+          const isRevealed = revealedIndices.has(index);
+          const isCurrentlyScrambling =
+            index === currentRevealIndex && isScrambling;
 
           return (
-            <span
+            <motion.span
               key={index}
-              className={isRevealedOrDone ? className : encryptedClassName}
+              className={isRevealed ? className : encryptedClassName}
+              initial={{ opacity: 0.7 }}
+              animate={{
+                opacity: isRevealed ? 1 : isCurrentlyScrambling ? 0.8 : 0.7,
+                scale: isCurrentlyScrambling ? 1.05 : 1,
+              }}
+              transition={{
+                duration: 0.1,
+                ease: "easeOut",
+              }}
             >
               {char}
-            </span>
+            </motion.span>
           );
         })}
       </span>

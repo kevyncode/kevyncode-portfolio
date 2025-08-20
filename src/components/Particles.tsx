@@ -84,10 +84,13 @@ const fragment = /* glsl */ `
       if(d > 0.5) {
         discard;
       }
-      gl_FragColor = vec4(vColor + 0.2 * sin(uv.yxx + uTime + vRandom.y * 6.28), 1.0);
+      // Aumentar o brilho multiplicando a cor base e adicionando mais luminosidade
+      vec3 brightColor = vColor * 1.5 + 0.4 * sin(uv.yxx + uTime + vRandom.y * 6.28);
+      gl_FragColor = vec4(brightColor, 1.0);
     } else {
-      float circle = smoothstep(0.5, 0.4, d) * 0.8;
-      gl_FragColor = vec4(vColor + 0.2 * sin(uv.yxx + uTime + vRandom.y * 6.28), circle);
+      float circle = smoothstep(0.5, 0.4, d) * 0.9;
+      vec3 brightColor = vColor * 1.3 + 0.3 * sin(uv.yxx + uTime + vRandom.y * 6.28);
+      gl_FragColor = vec4(brightColor, circle);
     }
   }
 `;
@@ -242,6 +245,7 @@ const Particles: React.FC<ParticlesProps> = ({
     sizeRandomness,
     cameraDistance,
     disableRotation,
+    particleColors,
   ]);
 
   return (

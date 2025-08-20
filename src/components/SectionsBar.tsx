@@ -4,85 +4,17 @@ import TechnologySection from "@/components/sections.components/TechnologySectio
 import SkillsSection from "@/components/sections.components/SkillsSection";
 import ProjectsSection from "@/components/sections.components/ProjectsSection";
 import ExperienceSection from "@/components/sections.components/ExperienceSection";
+
+// Import data from organized data files
+import { technologies } from "@/data/technologies";
+import { skillsData } from "@/data/skills";
+import { experiences } from "@/data/experiences";
+import { Repository, Skill } from "@/types";
 import {
-  FaCode,
-  FaUsers,
-  FaProjectDiagram,
-  FaTasks,
-  FaGitAlt,
-  FaCogs,
-  FaBug,
-  FaLanguage,
-} from "react-icons/fa";
-import javascriptIcon from "@/assets/jsicon.svg";
-import typescriptIcon from "@/assets/tsicon.svg";
-import reactIcon from "@/assets/reacticon.svg";
-import nextjsIcon from "@/assets/nexticon.svg";
-import nodejsIcon from "@/assets/nodeicon.svg";
-import tailwindcssIcon from "@/assets/tailicon.svg";
-import gitIcon from "@/assets/giticon.svg";
-import dockerIcon from "@/assets/dockericon.svg";
-import postrGreeSql from "@/assets/postgreeicon.svg";
-
-const technologies = [
-  { name: "JavaScript", icon: javascriptIcon },
-  { name: "TypeScript", icon: typescriptIcon },
-  { name: "React", icon: reactIcon },
-  { name: "Next.js", icon: nextjsIcon },
-  { name: "Node.js", icon: nodejsIcon },
-  { name: "Tailwind CSS", icon: tailwindcssIcon },
-  { name: "Git", icon: gitIcon },
-  { name: "Docker", icon: dockerIcon },
-  { name: "PostgreeSQL", icon: postrGreeSql },
-];
-
-const skills = [
-  { name: "Problem Solving", icon: <FaCode /> },
-  { name: "Team Collaboration", icon: <FaUsers /> },
-  { name: "Project Management", icon: <FaProjectDiagram /> },
-  { name: "Agile Methodologies", icon: <FaTasks /> },
-  { name: "Version Control (Git)", icon: <FaGitAlt /> },
-  { name: "Continuous Integration", icon: <FaCogs /> },
-  { name: "Test-Driven Development", icon: <FaBug /> },
-  { name: "Code Review", icon: <FaCode /> },
-  { name: "Debugging", icon: <FaBug /> },
-  { name: "English B2", icon: <FaLanguage /> },
-];
-
-const experiences = [
-  {
-    title: "Desenvolvedor e Engenheiro de Software",
-    company: "Projeto pessoal - Projeto 'Appetito'",
-    description: "12/2024 – Em Andamento",
-    details: `
-Ferramentas Utilizadas: TypeScript | React | Next.js | Tailwind CSS | Firebase | Git | GitHub | Scrum <br>
-• Fundador e desenvolvedor principal de uma aplicação web para gerenciamento de pedidos em restaurantes, utilizando React e Next.js para a criação de interfaces dinâmicas e responsivas. <br>
-• Criando componentes reutilizáveis e estilizados com Tailwind CSS, garantindo uma experiência de usuário consistente e moderna. <br>
-• Integrando a aplicação com Firebase para autenticação e armazenamento de dados, assegurando a segurança e a escalabilidade do projeto. <br>
-• Usando Visual Studio Code e gerenciando a integração com repositórios Git, utilizando GitHub para controle de versão e colaboração. <br>
-• Facilitando reuniões diárias, revisões de sprint e retrospectivas, garantindo entregas incrementais e a comunicação entre a equipe. <br>
-    `,
-  },
-  {
-    title: "Estudante e Pesquisador",
-    company: "Atividades Acadêmicas – Sistemas Operacionais e Redes",
-    description: "07/2024 – Finalizado",
-    details: `
-Ferramentas Utilizadas: VirtualBox | C | Linux | Scrum | Git <br>
-• Documentei e executei tarefas de instalação de máquinas virtuais e programação em C, sempre utilizando práticas ágeis para organização e interação rápida. <br>
-• Como Scrum Master em atividades de laboratório, gerenciei sprints curtos para entrega de experimentos práticos, como a execução de processos com fork e exec no Linux. <br>
-• Facilitar a comunicação entre os membros do grupo, garantindo que todos seguissem o cronograma. <br>
-    `,
-  },
-];
-
-interface Repository {
-  id: number;
-  name: string;
-  description: string;
-  html_url: string;
-}
-
+  fetchRepositories,
+  filterRepositoriesByTechnology,
+} from "@/utils/helpers";
+import { skillIcons } from "@/utils/icons";
 const SectionsBar = () => {
   const [activeSection, setActiveSection] = useState<string | null>(
     "Technologies"
@@ -95,13 +27,17 @@ const SectionsBar = () => {
     null
   );
 
+  // Convert skills data to proper format with icons
+  const skills: Skill[] = skillsData.map((skill) => ({
+    name: skill.name,
+    icon: React.createElement(
+      skillIcons[skill.iconKey as keyof typeof skillIcons]
+    ),
+  }));
+
   useEffect(() => {
     if (activeSection === "Projects") {
-      fetch(
-        "https://api.github.com/users/kevyncode/repos?sort=created&per_page=6"
-      )
-        .then((response) => response.json())
-        .then((data) => setRepositories(data));
+      fetchRepositories().then(setRepositories);
     }
   }, [activeSection]);
 
@@ -169,31 +105,28 @@ const SectionsBar = () => {
                 {selectedTechnology} Projects
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {repositories
-                  .filter((repo) =>
-                    repo.description?.includes(selectedTechnology)
-                  )
-                  .map((repo) => (
-                    <div
-                      key={repo.id}
-                      className="flex flex-col p-4 border border-zinc-400 rounded-lg bg-transparent"
+                {filterRepositoriesByTechnology(
+                  repositories,
+                  selectedTechnology
+                ).map((repo) => (
+                  <div
+                    key={repo.id}
+                    className="flex flex-col p-4 border border-zinc-400 rounded-lg bg-transparent"
+                  >
+                    <h3 className="text-lg font-semibold">{repo.name}</h3>
+                    <p className="text-sm text-zinc-400">{repo.description}</p>
+                    <a
+                      href={repo.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-2"
                     >
-                      <h3 className="text-lg font-semibold">{repo.name}</h3>
-                      <p className="text-sm text-zinc-400">
-                        {repo.description}
-                      </p>
-                      <a
-                        href={repo.html_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="mt-2"
-                      >
-                        <button className="px-4 py-2 bg-transparent text-white border border-zinc-600 rounded-lg hover:bg-zinc-700">
-                          GitHub Repository
-                        </button>
-                      </a>
-                    </div>
-                  ))}
+                      <button className="px-4 py-2 bg-transparent text-white border border-zinc-600 rounded-lg hover:bg-zinc-700">
+                        GitHub Repository
+                      </button>
+                    </a>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
